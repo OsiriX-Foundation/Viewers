@@ -1,9 +1,16 @@
 branches:
   only:
   - kheops_master
+  
+sudo: required
 
 services:
   - docker
   
 notifications:
   email: false
+  
+deploy:
+  skip_cleanup: true
+  - chmod +x docker/docker_push.sh
+  - ./docker/docker_push.sh
