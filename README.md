@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/OsiriX-Foundation/KheopsAuthorization.svg?branch=master)](https://travis-ci.org/OsiriX-Foundation/KheopsAuthorization)
+
 # Viewers
 This repo contains the OHIF DICOM Viewer and Lesion Tracker, and various shared meteor packages.
 
