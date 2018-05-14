@@ -2,7 +2,7 @@
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 ls
 
-#mv Packages OHIFViewer/packages
+mv Packages OHIFViewer/packages
 
 cd OHIFViewer
 ls
