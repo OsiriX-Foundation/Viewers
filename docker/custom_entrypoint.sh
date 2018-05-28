@@ -2,4 +2,4 @@
 
 echo customcustom
 
-./entrypoint.sh
+./entrypoint.sh node main.js
