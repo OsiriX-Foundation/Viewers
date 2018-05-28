@@ -150,11 +150,14 @@ function storeInstance(file) {
         try {
             KHEOPS.shareSeriesWithUser(result.data.studyUID, result.data.seriesUID);
         }catch (error) {
-            OHIF.log.warn('Unable to claim the series StudyInstanceUID:' + result.data.studyUID + 'SeriesInstanceUID:' + result.data.seriesUID);
+            OHIF.log.error('Unable to claim the series StudyInstanceUID:' + result.data.studyUID + 'SeriesInstanceUID:' + result.data.seriesUID);
+            OHIF.log.trace();
+            throw error;
         }
     } catch (error) {
+        OHIF.log.error(`error while storing instance of file:${file}`)
         OHIF.log.trace();
-        // throw error;
+        throw error;
     }
 
 

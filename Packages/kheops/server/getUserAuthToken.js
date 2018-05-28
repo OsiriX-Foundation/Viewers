@@ -1,10 +1,29 @@
-import { Meteor } from 'meteor/meteor'
+import { Meteor } from 'meteor/meteor';
 import { OHIF } from 'meteor/ohif:core';
 
 KHEOPS.subFromJWT = function (jwt) {
-    let payload = jwt.split('.')[1];
+    if (jwt === undefined) {
+        throw new Error("jwt is undefined");
+    }
+
+    OHIF.log.info(typeof jwt);
+
+    if (!(typeof(jwt) === 'string' || jwt instanceof String)) {
+        throw new Error("jwt is not a string");
+    }
+
+    let parts = jwt.split('.');
+    if (parts.length !== 3) {
+        throw new Error("jwt does not have 3 parts like a normal JWT");
+    }
+
+    let payload = parts[1];
     let payloadJSON = Buffer.from(payload, 'base64').toString();
     let payloadObject = JSON.parse(payloadJSON);
+
+    if (payloadObject.sub === undefined) {
+        throw new Error("jwt has no subject");
+    }
 
     return payloadObject['sub'];
 };
@@ -31,10 +50,21 @@ KHEOPS.shareStudyWithUser = function (studyInstanceUID, userId) {
 
 KHEOPS.shareSeriesWithUser = function (studyInstanceUID, seriesInstanceUID, userId) {
 
-    let authToken = KHEOPS.getUserAuthToken();
+    let authToken;
+    try {
+        authToken = KHEOPS.getUserAuthToken();
+    } catch (error) {
+        OHIF.log.error('unable to get the user auth token');
+        OHIF.log.trace();
+        throw error;
+    }
 
     if (!userId) {
         userId = Meteor.user().services.google.id;
+    }
+
+    if (userId === undefined) {
+        throw new Error('userId is undefined');
     }
 
     let options = {
@@ -48,6 +78,7 @@ KHEOPS.shareSeriesWithUser = function (studyInstanceUID, seriesInstanceUID, user
         let authorizationRoot = OHIF.servers.getCurrentServer().authorizationRoot;
         makeTokenRequestSync(authorizationRoot + '/users/' + userId + '/studies/' + studyInstanceUID + '/series/' + seriesInstanceUID, options);
     } catch (error) {
+        OHIF.log.error(`Error while trying to share study: ${studyInstanceUID} series: ${seriesInstanceUID} with ${userId}.`);
         OHIF.log.trace();
         throw error;
     }
@@ -111,7 +142,14 @@ KHEOPS.getSeriesAuthToken = function (seriesUID, user) {
 KHEOPS.getUserAuthToken = function() {
 
     // get the user's Oauth token
+    if (Meteor.user() === undefined) {
+        throw new Error("There is no current Meteor user");
+    }
+
     let googleOAuthIdToken = Meteor.user().services.google.idToken;
+    if (googleOAuthIdToken === undefined) {
+        throw new Error("The current user does not have a google OAuth Id token");
+    }
 
     let options = {
         userJWT: googleOAuthIdToken,
@@ -130,6 +168,8 @@ KHEOPS.getUserAuthToken = function() {
         let authorizationRoot = OHIF.servers.getCurrentServer().authorizationRoot;
         result = makeTokenRequestSync(authorizationRoot + '/token', options);
     } catch (error) {
+        OHIF.log.error('There was an error while getting an access token for');
+        OHIF.log.error(error);
         OHIF.log.trace();
         throw error;
     }
@@ -185,12 +225,16 @@ function makeTokenRequest(geturl, options, callback) {
     const req = requester(requestOpt, function(resp) {
         // TODO: handle errors with 400+ code
         if (resp.statusCode < 200 || resp.statusCode >= 300) {
-            const contentType = (resp.headers['content-type'] || '').split(';')[0];
-            if (jsonHeaders.indexOf(contentType) === -1) {
-                const errorMessage = `We only support json but "${contentType}" was sent by the server`;
-                callback(new Error(errorMessage), null);
-                return;
-            }
+            const errorMessage = `Error (${resp.statusCode}) when requesting an access token`;
+            callback(new Error(errorMessage), null);
+            return;
+        }
+
+        const contentType = (resp.headers['content-type'] || '').split(';')[0];
+        if (jsonHeaders.indexOf(contentType) === -1) {
+            const errorMessage = `We only support json but "${contentType}" was sent by the server`;
+            callback(new Error(errorMessage), null);
+            return;
         }
 
         let output = '';
