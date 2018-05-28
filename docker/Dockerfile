@@ -5,4 +5,4 @@ RUN chmod +x custom_entrypoint.sh
 
 ENTRYPOINT ["./custom_entrypoint.sh"]
 
-#CMD ["node", "main.js"]
+CMD ./entrypoint.sh node main.js
