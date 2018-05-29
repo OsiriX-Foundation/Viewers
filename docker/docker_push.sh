@@ -6,6 +6,6 @@ mv docker/Dockerfile OHIFViewer/Dockerfile
 mv docker/custom_entrypoint.sh OHIFViewer/custom_entrypoint.sh
 
 cd OHIFViewer
-docker build --build-arg INSTALL_MONGO=true -t osirixfoundation/kheops-viewer .
+docker build --build-arg INSTALL_MONGO=true -t osirixfoundation/kheops-viewer:$BRANCH .
 
-docker push osirixfoundation/kheops-viewer
+docker push osirixfoundation/kheops-viewer:$BRANCH
