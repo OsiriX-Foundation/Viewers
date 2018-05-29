@@ -9,7 +9,8 @@ services:
   
 notifications:
   email: false
-  
+    
 script:
+  - export BRANCH=$TRAVIS_BRANCH
   - chmod +x docker/docker_push.sh
   - ./docker/docker_push.sh
