@@ -155,7 +155,7 @@ KHEOPS.getUserAuthToken = function() {
         userJWT: googleOAuthIdToken,
         headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/x-www-form-urlencodedimportStudies',
         },
         postData: {
             'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',

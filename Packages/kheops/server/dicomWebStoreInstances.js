@@ -16,7 +16,7 @@ KHEOPS.dicomWebStoreInstances = function(fileList, callback) {
 
 function makestoreInstanceRequest(geturl, options, callback) {
     const parsed = url.parse(geturl);
-    const jsonHeaders = ['application/json'];
+    const jsonHeaders = ['application/dicom+json'];
 
     let file = options.file;
 
@@ -63,13 +63,18 @@ function makestoreInstanceRequest(geturl, options, callback) {
     const req = requester(requestOpt, function(resp) {
         // TODO: handle errors with 400+ code
         if (resp.statusCode < 200 || resp.statusCode >= 300) {
-            const contentType = (resp.headers['content-type'] || '').split(';')[0];
-            if (jsonHeaders.indexOf(contentType) === -1) {
-                const errorMessage = `We only support json but "${contentType}" was sent by the server`;
-                callback(new Error(errorMessage), null);
-                return;
-            }
+            const errorMessage = `Error (${resp.statusCode}) when storing an instance`;
+            callback(new Error(errorMessage), null);
+            return;
         }
+
+        const contentType = (resp.headers['content-type'] || '').split(';')[0];
+        if (jsonHeaders.indexOf(contentType) === -1) {
+            const errorMessage = `We only support dicom+json but "${contentType}" was sent by the server`;
+            callback(new Error(errorMessage), null);
+            return;
+        }
+
 
         let output = '';
 
