@@ -1,4 +1,11 @@
+
+### Travis CI
 [![Build Status](https://travis-ci.org/OsiriX-Foundation/Viewers.svg?branch=kheops_master)](https://travis-ci.org/OsiriX-Foundation/Viewers)
+
+### Docker image
+[![](https://images.microbadger.com/badges/version/osirixfoundation/kheops-viewer:kheops-master.svg)](https://microbadger.com/images/osirixfoundation/kheops-viewer:kheops-master "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/osirixfoundation/kheops-viewer:kheops-master.svg)](https://microbadger.com/images/osirixfoundation/kheops-viewer:kheops-master "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/osirixfoundation/kheops-viewer:kheops-master.svg)](https://microbadger.com/images/osirixfoundation/kheops-viewer:kheops-master "Get your own commit badge on microbadger.com")
 
 # Viewers
 This repo contains the OHIF DICOM Viewer and Lesion Tracker, and various shared meteor packages.
