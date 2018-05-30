@@ -1,6 +1,6 @@
 branches:
   only:
-  - ^kheops
+  - /^kheops/
   
 sudo: required
 
