@@ -1,6 +1,6 @@
 branches:
   only:
-  - kheops-master
+  - ^kheops
   
 sudo: required
 
