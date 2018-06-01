@@ -232,7 +232,7 @@ function makeTokenRequest(geturl, options, callback) {
 
         const contentType = (resp.headers['content-type'] || '').split(';')[0];
         if (resp.headers['content-type'] && jsonHeaders.indexOf(contentType) === -1) {
-            const errorMessage = `We only support json but "${contentType}" was sent by the server`;
+            const errorMessage = `We only support json but "${contentType}" was sent by the server, with status code "${resp.statusCode}"`;
             callback(new Error(errorMessage), null);
             return;
         }
