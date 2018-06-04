@@ -114,7 +114,7 @@ Template.app.helpers({
         // Return empty if viewer was not opened yet
         if (!OHIF.utils.ObjectPath.get(OHIF, 'viewer.data.studyInstanceUids')) return;
 
-        return isViewer ? 'Study list' : 'Back to viewer';
+        return isViewer ? 'Inbox' : 'Back to viewer';
     },
 
     dasherize(text) {
