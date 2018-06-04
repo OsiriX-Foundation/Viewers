@@ -9,15 +9,8 @@ Meteor.methods({
         console.log(username);
         console.log(studies);
 
-        // find the corresponding user document
-
-        let targetUser = Meteor.users.findOne({'services.google.email': username});
-        let targetId = targetUser.services.google.id;
-        console.log(targetUser);
-        console.log(targetId);
-
         studies.forEach((study) => {
-            KHEOPS.shareStudyWithUser(study, targetId);
+            KHEOPS.shareStudyWithUser(study, username);
         });
     },
 

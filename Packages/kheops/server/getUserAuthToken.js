@@ -39,9 +39,11 @@ KHEOPS.shareStudyWithUser = function (studyInstanceUID, userId) {
         }
     };
 
+    let encodedUserId = encodeURIComponent(userId);
+
     try {
         let authorizationRoot = OHIF.servers.getCurrentServer().authorizationRoot;
-        makeTokenRequestSync(authorizationRoot + '/users/' + userId + '/studies/' + studyInstanceUID, options);
+        makeTokenRequestSync(authorizationRoot + '/users/' + encodedUserId + '/studies/' + studyInstanceUID, options);
     } catch (error) {
         OHIF.log.trace();
         throw error;
