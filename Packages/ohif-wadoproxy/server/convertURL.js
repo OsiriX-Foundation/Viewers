@@ -21,3 +21,10 @@ WADOProxy.seriesFromWadoURL = function (wadoURLString) {
     let wadoURL = new URL(wadoURLString);
     return wadoURL.searchParams.get('seriesUID');
 }
+
+WADOProxy.studyFromWadoURL = function (wadoURLString) {
+    // this can be either WADO-URI or WADO-RS.
+    // it looks like everything goes through WADO-URI for now, so we pull out the query parameter
+    let wadoURL = new URL(wadoURLString);
+    return wadoURL.searchParams.get('studyUID');
+}

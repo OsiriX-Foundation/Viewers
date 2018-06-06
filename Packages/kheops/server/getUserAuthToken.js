@@ -107,7 +107,7 @@ KHEOPS.deleteStudy = function (studyInstanceUID) {
     }
 };
 
-KHEOPS.getSeriesAuthToken = function (seriesUID, user) {
+KHEOPS.getSeriesAuthToken = function (studyUID, seriesUID,  user) {
     if (!user) {
         user = Meteor.user();
     }
@@ -124,7 +124,7 @@ KHEOPS.getSeriesAuthToken = function (seriesUID, user) {
         postData: {
             'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
             'assertion': googleOAuthIdToken,
-            'scope': 'seriesInstanceUID=' + seriesUID,
+            'scope': 'StudyInstanceUID=' + studyUID + ' SeriesInstanceUID=' + seriesUID,
         },
     };
 

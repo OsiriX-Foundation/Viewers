@@ -67,8 +67,9 @@ Router.route(Settings.uri.replace(OHIF.utils.absoluteUrl(), ''), function() {
         return;
     }
 
+    const studyUID = WADOProxy.studyFromWadoURL(wadoUrl);
     const seriesUID = WADOProxy.seriesFromWadoURL(wadoUrl);
-    const authToken = KHEOPS.getSeriesAuthToken(seriesUID, user);
+    const authToken = KHEOPS.getSeriesAuthToken(studyUID, seriesUID, user);
 
     if (requestOpt.logRequests) {
         console.log(request.url);
