@@ -85,7 +85,8 @@ function makestoreInstanceRequest(geturl, options, callback) {
         });
 
         resp.on('error', function (responseError) {
-            OHIF.log.error('There was an error in the Kheops Authentication Server')
+            OHIF.log.error('There was an error in the Kheops PACS Server')
+            OHIF.log.error(requestOpt);
             OHIF.log.error(error.stack);
             OHIF.log.trace();
 
@@ -111,8 +112,9 @@ function makestoreInstanceRequest(geturl, options, callback) {
     });
 
     req.on('error', function (requestError) {
-        OHIF.log.error('Couldn\'t connect to the Kheops Authentication server.');
+        OHIF.log.error('Couldn\'t connect to the Kheops PACS server.');
         OHIF.log.error('Make sure you are trying to connect to the right server and that it is up and running.');
+        OHIF.log.error(requestOpt);
         OHIF.log.error(requestError.stack);
         OHIF.log.trace();
 
