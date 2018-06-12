@@ -8,8 +8,18 @@ const http = Npm.require('http');
 const https = Npm.require('https');
 
 KHEOPS.dicomWebStoreInstances = function(fileList, callback) {
+    let authToken;
+
+    try {
+        authToken = KHEOPS.getUserAuthToken();
+    } catch (error) {
+        OHIF.log.error('unable to get the user auth token');
+        OHIF.log.trace();
+        throw error;
+    }
+
     fileList.forEach(function(file) {
-        storeInstance(file);
+        storeInstance(file, authToken);
         callback(null, file);
     });
 };
@@ -59,6 +69,8 @@ function makestoreInstanceRequest(geturl, options, callback) {
     let boundary = "0f974adb38fcc82c64c63e077a1c0452d79232cb"
     requestOpt.headers['Content-Type'] = "multipart/related; type='application/dicom'; boundary=" + boundary + ";";
     requestOpt.headers['Accept'] = "application/dicom+json";
+    requestOpt.headers['Authorization'] = "Bearer "+options.authToken;
+
 
     const req = requester(requestOpt, function(resp) {
         // TODO: handle errors with 400+ code
@@ -135,10 +147,11 @@ function makestoreInstanceRequest(geturl, options, callback) {
 
 const makestoreInstanceRequestSync = Meteor.wrapAsync(makestoreInstanceRequest);
 
-function storeInstance(file) {
+function storeInstance(file, authToken) {
 
     let options = {
         file: file,
+        authToken: authToken,
         // userJWT: googleOAuthIdToken,
         // headers: {
         //     Accept: 'application/json',
