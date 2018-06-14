@@ -11,21 +11,23 @@ var conn = DIMSE.connection;
 
 KHEOPS.dicomWebStoreInstances = function(fileList, callback) {
     let authToken;
+    let wadoRoot;
 
     try {
         authToken = KHEOPS.getUserAuthToken();
+        wadoRoot = OHIF.servers.getCurrentServer().wadoRoot;
     } catch (error) {
         OHIF.log.error('unable to get the user auth token');
         OHIF.log.trace();
-        throw error;
+        fileList.forEach(file => callback(error, file));
+        return;
     }
-    let wadoRoot = OHIF.servers.getCurrentServer().wadoRoot;
 
     let captureFunc = function(self, contexts, toSend, handle, metaLength) {
         KHEOPS.sendProcessedFiles(self, contexts, toSend, handle, metaLength, authToken, wadoRoot);
     };
 
-    var handle = conn.storeInstances(fileList, captureFunc);
+    let handle = conn.storeInstances(fileList, captureFunc);
     handle.on('file', function (err, file, result) {
         callback(err, file, result);
     });
