@@ -92,8 +92,6 @@ function makestoreInstanceRequest(geturl, options, callback) {
         requestOpt.method = options.method;
     }
 
-    const postData = options.postData;
-
     if (options.headers) {
         requestOpt.headers = Object.assign({}, options.headers);
     } else {
@@ -175,7 +173,10 @@ function makestoreInstanceRequest(geturl, options, callback) {
 
         req.end();
     });
-
+    readStream.on('error', () => {
+        OHIF.log.error('Error reading the files stream.');
+        callback(new Meteor.Error('Error reading the files stream'), null);
+    });
 }
 
 function storeInstance(file, authToken, wadoRoot, callback) {
