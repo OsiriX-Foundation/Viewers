@@ -42,7 +42,12 @@ KHEOPS.sendProcessedFiles = function(self, contexts, toSend, handle, metaLength,
     let sendNext = function sendNext() {
         if (fileList.length > 0) {
             let file = fileList.shift();
+            let handled = false;
             storeInstance(file, authToken, wadoRoot, function (error, retval) {
+                if (handled) {
+                    return;
+                }
+                handled = true;
                 if (error) {
                     handle.emit('file', error, file);
                 } else {
@@ -53,7 +58,7 @@ KHEOPS.sendProcessedFiles = function(self, contexts, toSend, handle, metaLength,
         }
     };
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 6; i++) {
         sendNext();
     }
 };
