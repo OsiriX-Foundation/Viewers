@@ -2,12 +2,11 @@ import { Meteor } from 'meteor/meteor'
 import { OHIF } from 'meteor/ohif:core';
 
 const fs = Npm.require('fs');
-const fiber = Npm.require('fibers');
 const url = Npm.require('url');
 const http = Npm.require('http');
 const https = Npm.require('https');
 
-var conn = DIMSE.connection;
+let conn = DIMSE.connection;
 
 KHEOPS.dicomWebStoreInstances = function(fileList, callback) {
     let authToken;
@@ -31,7 +30,10 @@ KHEOPS.dicomWebStoreInstances = function(fileList, callback) {
     handle.on('file', function (err, file, result) {
         callback(err, file, result);
     });
-}
+    handle.on('error', function (err, file) {
+        callback(err, file);
+    });
+};
 
 KHEOPS.sendProcessedFiles = function(self, contexts, toSend, handle, metaLength, authToken, wadoRoot) {
 
