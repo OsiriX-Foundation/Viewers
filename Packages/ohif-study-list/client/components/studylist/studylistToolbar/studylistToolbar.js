@@ -17,7 +17,8 @@ Template.studylistToolbar.onCreated(() => {
 Template.studylistToolbar.events({
     'change .js-import-files'(event) {
         //  Get selected files located in the client machine
-        const selectedFiles = $.map(event.currentTarget.files, value => value);
+        let selectedFiles = $.map(event.currentTarget.files, value => value);
+        selectedFiles = selectedFiles.filter(file => (file.name.endsWith('DICOMDIR') === false && file.name.endsWith('.DS_Store') === false));
 
         OHIF.studylist.importStudies(selectedFiles);
     },

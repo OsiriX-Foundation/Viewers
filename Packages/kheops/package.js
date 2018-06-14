@@ -9,6 +9,7 @@ Package.onUse(function(api) {
 
     api.use('http');
     api.use('ecmascript');
+    api.use('ohif:dicom-services');
 
     api.addFiles('server/namespace.js', 'server');
     api.addFiles('server/getUserAuthToken.js', 'server');

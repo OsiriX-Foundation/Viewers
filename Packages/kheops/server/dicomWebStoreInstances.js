@@ -7,6 +7,8 @@ const url = Npm.require('url');
 const http = Npm.require('http');
 const https = Npm.require('https');
 
+var conn = DIMSE.connection;
+
 KHEOPS.dicomWebStoreInstances = function(fileList, callback) {
     let authToken;
 
@@ -17,11 +19,39 @@ KHEOPS.dicomWebStoreInstances = function(fileList, callback) {
         OHIF.log.trace();
         throw error;
     }
+    let wadoRoot = OHIF.servers.getCurrentServer().wadoRoot;
 
-    fileList.forEach(function(file) {
-        storeInstance(file, authToken);
-        callback(null, file);
+    let captureFunc = function(self, contexts, toSend, handle, metaLength) {
+        KHEOPS.sendProcessedFiles(self, contexts, toSend, handle, metaLength, authToken, wadoRoot);
+    };
+
+    var handle = conn.storeInstances(fileList, captureFunc);
+    handle.on('file', function (err, file, result) {
+        callback(err, file, result);
     });
+}
+
+KHEOPS.sendProcessedFiles = function(self, contexts, toSend, handle, metaLength, authToken, wadoRoot) {
+
+    let fileList = toSend.map(x => x.file);
+
+    let sendNext = function sendNext() {
+        if (fileList.length > 0) {
+            let file = fileList.shift();
+            storeInstance(file, authToken, wadoRoot, function (error, retval) {
+                if (error) {
+                    handle.emit('file', error, file);
+                } else {
+                    handle.emit('file', null, file, retval);
+                }
+                sendNext();
+            });
+        }
+    };
+
+    for (let i = 0; i < 10; i++) {
+        sendNext();
+    }
 };
 
 function makestoreInstanceRequest(geturl, options, callback) {
@@ -144,44 +174,15 @@ function makestoreInstanceRequest(geturl, options, callback) {
 
 }
 
-
-const makestoreInstanceRequestSync = Meteor.wrapAsync(makestoreInstanceRequest);
-
-function storeInstance(file, authToken) {
+function storeInstance(file, authToken, wadoRoot, callback) {
 
     let options = {
         file: file,
         authToken: authToken,
-        // userJWT: googleOAuthIdToken,
-        // headers: {
-        //     Accept: 'application/json',
-        //     'Content-Type': 'application/x-www-form-urlencoded',
-        // },
-        // postData: {
-        //     'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-        //     'assertion': googleOAuthIdToken,
-        // },
     };
 
-    let result;
-    try {
-        let wadoRoot = OHIF.servers.getCurrentServer().wadoRoot;
-        result = makestoreInstanceRequestSync(wadoRoot + '/studies', options);
-        try {
-            KHEOPS.shareSeriesWithUser(result.data.studyUID, result.data.seriesUID);
-        }catch (error) {
-            OHIF.log.error('Unable to claim the series StudyInstanceUID:' + result.data.studyUID + 'SeriesInstanceUID:' + result.data.seriesUID);
-            OHIF.log.error(error);
-            OHIF.log.trace();
-            throw error;
-        }
-    } catch (error) {
-        OHIF.log.error(`error while storing instance of file:${file}`);
-        OHIF.log.error(error);
-        OHIF.log.trace();
-        throw error;
-    }
-
-
+    makestoreInstanceRequest(wadoRoot + '/studies', options, function (error, retval) {
+        callback(error, retval);
+    });
 }
 

@@ -50,15 +50,16 @@ KHEOPS.shareStudyWithUser = function (studyInstanceUID, userId) {
     }
 };
 
-KHEOPS.shareSeriesWithUser = function (studyInstanceUID, seriesInstanceUID, userId) {
+KHEOPS.shareSeriesWithUser = function (studyInstanceUID, seriesInstanceUID, userId, authToken) {
 
-    let authToken;
-    try {
-        authToken = KHEOPS.getUserAuthToken();
-    } catch (error) {
-        OHIF.log.error('unable to get the user auth token');
-        OHIF.log.trace();
-        throw error;
+    if (!authToken) {
+        try {
+            authToken = KHEOPS.getUserAuthToken();
+        } catch (error) {
+            OHIF.log.error('unable to get the user auth token');
+            OHIF.log.trace();
+            throw error;
+        }
     }
 
     if (!userId) {

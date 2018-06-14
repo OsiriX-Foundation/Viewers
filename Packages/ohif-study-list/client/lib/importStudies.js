@@ -113,9 +113,9 @@ const importStudiesInternal = (studiesToImport, dialog) => {
             OHIF.studylist.collections.StudyImportStatus.find(studyImportStatusId).observe({
                 changed(studyImportStatus) {
                     const { numberOfStudiesImported, numberOfStudiesFailed } = studyImportStatus;
-                    dialog.update(numberOfStudiesImported);
+                    dialog.update(numberOfStudiesImported + numberOfStudiesFailed);
 
-                    if (numberOfStudiesImported === numberOfStudies) {
+                    if ((numberOfStudiesImported + numberOfStudiesFailed) === numberOfStudies) {
                         //  The entire import operation is completed, so remove the study import status item
                         Meteor.call('removeStudyImportStatus', studyImportStatus._id);
 

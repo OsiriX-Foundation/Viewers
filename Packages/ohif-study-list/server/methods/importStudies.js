@@ -44,7 +44,7 @@ Meteor.methods({
         if (server && server.type === 'dimse') {
             return true;
         } else if (server && server.type === 'dicomWeb') {
-            return true
+            return true;
         }
     },
     /**
@@ -64,8 +64,6 @@ Meteor.methods({
         }
 
         if (server.type === 'dicomWeb') {
-            //TODO: Support importing studies into dicomWeb
-            OHIF.log.warn('Importing studies into dicomWeb is currently not supported.');
             importStudiesDicomWeb(studiesToImport, studyImportStatusId);
 
         } else if (server.type === 'dimse') {
@@ -96,8 +94,18 @@ function importStudiesDicomWeb(studiesToImport, studyImportStatusId) {
     if (!studiesToImport || !studyImportStatusId) {
         return;
     }
+    let userId = Meteor.user().services.google.id;
+    let authToken;
+    try {
+        authToken = KHEOPS.getUserAuthToken();
+    } catch (error) {
+        OHIF.log.error('unable to get the user auth token');
+        OHIF.log.trace();
+        throw error;
+    }
+
     //  Perform C-Store to import studies and handle the callbacks to update import status
-    KHEOPS.dicomWebStoreInstances(studiesToImport, function(err, file) {
+    KHEOPS.dicomWebStoreInstances(studiesToImport, function(err, file, result) {
         try {
             //  Use fiber to be able to modify meteor collection in callback
             fiber(function() {
@@ -110,6 +118,15 @@ function importStudiesDicomWeb(studiesToImport, studyImportStatusId) {
                         );
                         OHIF.log.warn('Failed to import study via DicomWeb: ', file, err);
                     } else {
+                        if (result) {
+                            try {
+                                KHEOPS.shareSeriesWithUser(result.data.studyUID, result.data.seriesUID, userId, authToken);
+                            } catch (error) {
+                                OHIF.log.error('Unable to claim the series StudyInstanceUID:' + result.data.studyUID + 'SeriesInstanceUID:' + result.data.seriesUID);
+                                throw error;
+                            }
+                        }
+
                         OHIF.studylist.collections.StudyImportStatus.update(
                             { _id: studyImportStatusId },
                             { $inc: { numberOfStudiesImported: 1 } }

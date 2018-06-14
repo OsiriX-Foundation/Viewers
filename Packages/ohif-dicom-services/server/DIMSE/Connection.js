@@ -132,7 +132,7 @@ Connection.prototype._sendFile = function(socket, sHandle, file, maxSend, metaLe
     });
 };
 
-Connection.prototype.storeInstances = function(fileList) {
+Connection.prototype.storeInstances = function(fileList, sendProcessedFilesFunc) {
     var contexts = {};
     var read = 0;
     var length = fileList.length;
@@ -140,15 +140,22 @@ Connection.prototype.storeInstances = function(fileList) {
     var self = this;
     var handle = new StoreHandle();
     var lastProcessedMetaLength;
+    if (sendProcessedFilesFunc === undefined) {
+        sendProcessedFilesFunc = sendProcessedFiles;
+    }
 
     fileList.forEach(function(bufferOrFile) {
         var fileNameText = typeof bufferOrFile === 'string' ? bufferOrFile : 'buffer';
         DicomMessage.readMetaHeader(bufferOrFile, function(err, metaMessage, metaLength) {
             read++;
             if (err) {
-                handle.emit('file', err, fileNameText);
+                if (fileNameText.endsWith('.DS_Store')) {
+                    handle.emit('file', null, fileNameText);
+                } else {
+                    handle.emit('file', err, fileNameText);
+                }
                 if (read === length && toSend.length > 0 && lastProcessedMetaLength) {
-                    sendProcessedFiles(self, contexts, toSend, handle, lastProcessedMetaLength);
+                    sendProcessedFilesFunc(self, contexts, toSend, handle, lastProcessedMetaLength);
                 }
 
                 return;
@@ -168,14 +175,18 @@ Connection.prototype.storeInstances = function(fileList) {
                 contexts[sopClassUID].push(syntax);
             }
 
-            toSend.push({
-                file: bufferOrFile,
-                context: sopClassUID,
-                uid: instanceUID
-            });
+            if (fileNameText.endsWith('DICOMDIR')) {
+                handle.emit('file', null, fileNameText);
+            } else {
+                toSend.push({
+                    file: bufferOrFile,
+                    context: sopClassUID,
+                    uid: instanceUID
+                });
+            }
 
             if (read === length) {
-                sendProcessedFiles(self, contexts, toSend, handle, metaLength);
+                sendProcessedFilesFunc(self, contexts, toSend, handle, metaLength);
             }
         });
     });
