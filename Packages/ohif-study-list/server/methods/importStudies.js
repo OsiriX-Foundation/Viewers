@@ -104,6 +104,9 @@ function importStudiesDicomWeb(studiesToImport, studyImportStatusId) {
         throw error;
     }
 
+    OHIF.log.error('studiesToImport');
+    OHIF.log.error(studiesToImport);
+
     let filesReceived = {};
     KHEOPS.dicomWebStoreInstances(studiesToImport, function(err, file, result) {
         if (filesReceived[file] !== undefined) {

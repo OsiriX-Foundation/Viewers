@@ -39,9 +39,13 @@ KHEOPS.sendProcessedFiles = function(self, contexts, toSend, handle, metaLength,
 
     let fileList = toSend.map(x => x.file);
 
+    OHIF.log.error('sendProcessedFiles fileList');
+    OHIF.log.error(fileList);
+
     let sendNext = function sendNext() {
         if (fileList.length > 0) {
             let file = fileList.shift();
+            OHIF.log.error('sending ' + file);
             let handled = false;
             storeInstance(file, authToken, wadoRoot, function (error, retval) {
                 if (handled) {
