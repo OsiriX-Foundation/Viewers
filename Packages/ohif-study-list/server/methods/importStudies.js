@@ -116,7 +116,8 @@ function importStudiesDicomWeb(studiesToImport, studyImportStatusId) {
                             { _id: studyImportStatusId },
                             { $inc: { numberOfStudiesFailed: 1 } }
                         );
-                        OHIF.log.warn('Failed to import study via DicomWeb: ', file, err);
+                        OHIF.log.error(err);
+                        OHIF.log.error('Primary failed to import study via DicomWeb: ', file, err);
                     } else {
                         if (result) {
                             try {
@@ -139,7 +140,8 @@ function importStudiesDicomWeb(studiesToImport, studyImportStatusId) {
                         { _id: studyImportStatusId },
                         { $inc: { numberOfStudiesFailed: 1 } }
                     );
-                    OHIF.log.warn('Failed to import study via DicomWeb: ', file, error);
+                    OHIF.log.error(error);
+                    OHIF.log.error('Failed to import study via DicomWeb: ', file, error);
                 } finally {
                     //  The import operation of this file is completed, so delete it if still exists
                     if (fileExists(file)) {
@@ -153,7 +155,8 @@ function importStudiesDicomWeb(studiesToImport, studyImportStatusId) {
                 { _id: studyImportStatusId },
                 { $inc: { numberOfStudiesFailed: 1 } }
             );
-            OHIF.log.warn('Failed to import study via DicomWeb: ', file, error);
+            OHIF.log.error(error);
+            OHIF.log.error('Failed to import study via DicomWeb outside fiber: ', file, error);
         }
 
     });
