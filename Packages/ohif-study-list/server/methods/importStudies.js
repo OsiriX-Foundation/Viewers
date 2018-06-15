@@ -104,8 +104,21 @@ function importStudiesDicomWeb(studiesToImport, studyImportStatusId) {
         throw error;
     }
 
-    //  Perform C-Store to import studies and handle the callbacks to update import status
+    let filesReceived = {};
     KHEOPS.dicomWebStoreInstances(studiesToImport, function(err, file, result) {
+        if (filesReceived[file] !== undefined) {
+            let receiveError = new Error('Received file more than once:' + file);
+            OHIF.log.error(receiveError);
+            if (err) {
+                OHIF.log.error('Primary error:', err);
+            } else {
+                OHIF.log.error('No primary error');
+            }
+            OHIF.log.error('Previous call stack: ', filesReceived[file]);
+            return;
+        }
+        filesReceived[file] = new Error('previous call stack for file:'+file);
+
         try {
             //  Use fiber to be able to modify meteor collection in callback
             fiber(function() {
@@ -116,7 +129,6 @@ function importStudiesDicomWeb(studiesToImport, studyImportStatusId) {
                             { _id: studyImportStatusId },
                             { $inc: { numberOfStudiesFailed: 1 } }
                         );
-                        OHIF.log.error(err);
                         OHIF.log.error('Primary failed to import study via DicomWeb: ', file, err);
                     } else {
                         if (result) {
