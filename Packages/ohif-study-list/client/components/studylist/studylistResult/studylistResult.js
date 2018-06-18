@@ -183,6 +183,9 @@ function search() {
             return;
         }
 
+        // Clear all current studies
+        OHIF.studylist.collections.Studies.remove({});
+
         // Loop through all identified studies
         studies.forEach(study => {
             // Search the rest of the parameters that aren't done via the server call
