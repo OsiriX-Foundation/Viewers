@@ -6,7 +6,8 @@ Meteor.startup(() => {
 
     OHIF.studylist.dropdown.setItems([{
         action: OHIF.studylist.viewSeriesDetails,
-        text: 'View Series Details'
+        text: 'View Series Details',
+        disabled: true,
     }, {
         text: 'Anonymize',
         disabled: true
