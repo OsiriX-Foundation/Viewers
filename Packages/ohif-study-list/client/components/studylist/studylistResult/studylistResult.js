@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { Tracker } from 'meteor/tracker';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { ReactiveDict } from 'meteor/reactive-dict';
@@ -280,7 +281,10 @@ Template.studylistResult.onRendered(() => {
         instance.datePicker.updateInputText();
     } else {
         // Retrieve all studies
-        search();
+        Tracker.autorun(function () {
+            OHIF.studylist.studiesDependency.depend();
+            search();
+        });
     }
 });
 

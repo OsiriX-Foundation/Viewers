@@ -32,8 +32,15 @@ OHIF.studylist.importStudies = filesToImport => {
 
         const uploadSuccessHandler = studiesToImport => {
             importStudiesInternal(studiesToImport, dialog).then(() => {
-                dialog.done();
+                dialog.setMessage("Finishing up");
+                Meteor.setTimeout(function () { // wait for 3 seconds to that the Authorization server has time to update from the PACS
+                    OHIF.studylist.studiesDependency.changed();
+                    dialog.done();
+                }, 3000);
             }).catch(errorMessage => {
+                Meteor.setTimeout(function () { // wait for 3 seconds to that the Authorization server has time to update from the PACS
+                    OHIF.studylist.studiesDependency.changed();
+                }, 3000);
                 dialog.setMessage(errorMessage);
             });
         };
