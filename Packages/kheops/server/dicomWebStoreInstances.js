@@ -117,7 +117,7 @@ function makestoreInstanceRequest(geturl, options, callback) {
         // TODO: handle errors with 400+ code
         if (resp.statusCode < 200 || resp.statusCode >= 300) {
             const errorMessage = `Error (${resp.statusCode}) when storing an instance`;
-            callback(new Error(errorMessage), null);
+            callback(new Error(errorMessage), {statusCode: resp.statusCode});
             return;
         }
 
@@ -195,8 +195,21 @@ function storeInstance(file, authToken, wadoRoot, callback) {
         authToken: authToken,
     };
 
-    makestoreInstanceRequest(wadoRoot + '/studies', options, function (error, retval) {
-        callback(error, retval);
-    });
+    function callRequest () {
+        makestoreInstanceRequest(wadoRoot + '/studies', options, testCallback);
+    }
+
+    // retry up to 5 times if dcm4chee returns 409 (conflict)
+    let retries = 0;
+    function testCallback(error, retval) {
+        if (retries < 5 && error !== null && retval !== null && retval.statusCode == 409) {
+            retries++;
+            callRequest();
+        } else {
+            callback(error, retval);
+        }
+    }
+
+    callRequest();
 }
 
