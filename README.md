@@ -7,6 +7,8 @@
 [![](https://images.microbadger.com/badges/image/osirixfoundation/kheops-viewer:kheops-master.svg)](https://microbadger.com/images/osirixfoundation/kheops-viewer:kheops-master "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/commit/osirixfoundation/kheops-viewer:kheops-master.svg)](https://microbadger.com/images/osirixfoundation/kheops-viewer:kheops-master "Get your own commit badge on microbadger.com")
 
+Name : [osirixfoundation/kheops-viewer](https://hub.docker.com/r/osirixfoundation/kheops-viewer/)
+
 # Viewers
 This repo contains the OHIF DICOM Viewer and Lesion Tracker, and various shared meteor packages.
 
