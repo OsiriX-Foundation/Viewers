@@ -85,6 +85,7 @@ const exportQueriedStudies = (studiesToExport, options) => {
     };
 
     let totalBytes = 0;
+    let finishedDownloads = 0;
 
     studiesToExport.forEach(study => {
         study.seriesList.forEach(series => {
@@ -103,16 +104,16 @@ const exportQueriedStudies = (studiesToExport, options) => {
                     totalBytes += data && data.size ? data.size : 0;
 
                     if(downloadIndex > -1) {
-                        pendingDownloads.splice(downloadIndex, 1);
+                        finishedDownloads++;
                     }
 
                     notify({
                         total: exportFilesCount,
-                        processed: exportFilesCount - pendingDownloads.length,
+                        processed: finishedDownloads,
                         totalBytes: totalBytes
-                    })
+                    });
                     
-                    return zipInstance(study, series, instance, zip, data)
+                    return zipInstance(study, series, instance, zip, data);
                 })
                 .catch(err => {
                     if(!(err instanceof ExportStudyDownloadCanceledError)) {
@@ -134,7 +135,7 @@ const exportQueriedStudies = (studiesToExport, options) => {
             const zipContent = zip.generate({ type: 'blob' });
             saveAs(zipContent, 'studies.zip');
         })
-    }
+    };
 };
 
 const downloadDicomFile = instance => {
@@ -189,7 +190,7 @@ const zipInstance = (study, series, instance, zip, data) => {
         fileReader.onload = () => {
             try {
                 zipFolder.file(`${instance.sopInstanceUid}.dcm`, fileReader.result, { binary: true });
-                resolve()
+                resolve();
             } catch(err) {
                 reject(err);
             }
