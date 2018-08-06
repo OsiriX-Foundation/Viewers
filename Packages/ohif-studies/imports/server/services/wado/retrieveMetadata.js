@@ -47,7 +47,7 @@ const paletteColorCache = {
  */
 function buildUrl(server, studyInstanceUid, user = undefined) {
     if (user) {
-        return server.authorizationRoot + '/users/' + user + '/studies/' + studyInstanceUid + '/metadata';
+        return server.authorizationRoot + '/studies/' + studyInstanceUid + '/metadata';
     } else {
         return server.wadoRoot + '/studies/' + studyInstanceUid + '/metadata';
     }

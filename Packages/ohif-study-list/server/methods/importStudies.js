@@ -94,7 +94,6 @@ function importStudiesDicomWeb(studiesToImport, studyImportStatusId) {
     if (!studiesToImport || !studyImportStatusId) {
         return;
     }
-    let userId = Meteor.user().services.google.id;
     let authToken;
     try {
         authToken = KHEOPS.getUserAuthToken();
@@ -136,7 +135,7 @@ function importStudiesDicomWeb(studiesToImport, studyImportStatusId) {
                     } else {
                         if (result) {
                             try {
-                                KHEOPS.shareSeriesWithUser(result.data.studyUID, result.data.seriesUID, userId, authToken);
+                                KHEOPS.claimSeriesForUser(result.data.studyUID, result.data.seriesUID, authToken);
                             } catch (error) {
                                 OHIF.log.error('Unable to claim the series StudyInstanceUID:' + result.data.studyUID + 'SeriesInstanceUID:' + result.data.seriesUID);
                                 throw error;

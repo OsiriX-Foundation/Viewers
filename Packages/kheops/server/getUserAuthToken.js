@@ -43,14 +43,14 @@ KHEOPS.shareStudyWithUser = function (studyInstanceUID, userId) {
 
     try {
         let authorizationRoot = OHIF.servers.getCurrentServer().authorizationRoot;
-        makeTokenRequestSync(authorizationRoot + '/users/' + encodedUserId + '/studies/' + studyInstanceUID, options);
+        makeTokenRequestSync(authorizationRoot + '/studies/' + studyInstanceUID + '/users/' + encodedUserId, options);
     } catch (error) {
         OHIF.log.trace();
         throw error;
     }
 };
 
-KHEOPS.shareSeriesWithUser = function (studyInstanceUID, seriesInstanceUID, userId, authToken) {
+KHEOPS.claimSeries = function (studyInstanceUID, seriesInstanceUID, authToken) {
 
     if (!authToken) {
         try {
@@ -62,14 +62,6 @@ KHEOPS.shareSeriesWithUser = function (studyInstanceUID, seriesInstanceUID, user
         }
     }
 
-    if (!userId) {
-        userId = Meteor.user().services.google.id;
-    }
-
-    if (userId === undefined) {
-        throw new Error('userId is undefined');
-    }
-
     let options = {
         method: 'PUT',
         headers: {
@@ -79,9 +71,9 @@ KHEOPS.shareSeriesWithUser = function (studyInstanceUID, seriesInstanceUID, user
 
     try {
         let authorizationRoot = OHIF.servers.getCurrentServer().authorizationRoot;
-        makeTokenRequestSync(authorizationRoot + '/users/' + userId + '/studies/' + studyInstanceUID + '/series/' + seriesInstanceUID, options);
+        makeTokenRequestSync(authorizationRoot + '/studies/' + studyInstanceUID + '/series/' + seriesInstanceUID, options);
     } catch (error) {
-        OHIF.log.error(`Error while trying to share study: ${studyInstanceUID} series: ${seriesInstanceUID} with ${userId}.`);
+        OHIF.log.error(`Error while trying to share study: ${studyInstanceUID} series: ${seriesInstanceUID}.`);
         OHIF.log.trace();
         throw error;
     }
@@ -90,7 +82,6 @@ KHEOPS.shareSeriesWithUser = function (studyInstanceUID, seriesInstanceUID, user
 
 KHEOPS.deleteStudy = function (studyInstanceUID) {
     let authToken = KHEOPS.getUserAuthToken();
-    let userId = Meteor.user().services.google.id;
 
     let options = {
         method: 'DELETE',
@@ -101,7 +92,7 @@ KHEOPS.deleteStudy = function (studyInstanceUID) {
 
     try {
         let authorizationRoot = OHIF.servers.getCurrentServer().authorizationRoot;
-        makeTokenRequestSync(authorizationRoot + '/users/' + userId + '/studies/' + studyInstanceUID, options);
+        makeTokenRequestSync(authorizationRoot + '/studies/' + studyInstanceUID, options);
     } catch (error) {
         OHIF.log.trace();
         throw error;

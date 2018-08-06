@@ -59,7 +59,7 @@ function filterToQIDOURL(server, filter, user = undefined) {
     }
 
     if (user) {
-        return server.authorizationRoot + '/users/' + user + '/studies?' + encodeQueryData(parameters);
+        return server.authorizationRoot + '/studies?' + encodeQueryData(parameters);
     } else {
         return server.qidoRoot + '/studies?' + encodeQueryData(parameters);
     }
