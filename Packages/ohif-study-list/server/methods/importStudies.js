@@ -135,7 +135,7 @@ function importStudiesDicomWeb(studiesToImport, studyImportStatusId) {
                     } else {
                         if (result) {
                             try {
-                                KHEOPS.claimSeriesForUser(result.data.studyUID, result.data.seriesUID, authToken);
+                                KHEOPS.claimSeries(result.data.studyUID, result.data.seriesUID, authToken);
                             } catch (error) {
                                 OHIF.log.error('Unable to claim the series StudyInstanceUID:' + result.data.studyUID + 'SeriesInstanceUID:' + result.data.seriesUID);
                                 throw error;
