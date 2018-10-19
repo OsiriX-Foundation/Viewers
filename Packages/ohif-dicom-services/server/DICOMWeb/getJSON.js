@@ -46,13 +46,15 @@ function makeRequest(geturl, options, callback) {
     const req = requester(requestOpt, function(resp) {
         // TODO: handle errors with 400+ code
         const contentType = (resp.headers['content-type'] || '').split(';')[0];
-        if (jsonHeaders.indexOf(contentType) === -1) {
+        let output = '';
+
+        if (resp.statusCode === 204) {
+            output = '[]';
+        } else if (jsonHeaders.indexOf(contentType) === -1) {
             const errorMessage = `We only support json but "${contentType}" was sent by the server`;
             callback(new Error(errorMessage), null);
             return;
         }
-
-        let output = '';
 
         resp.setEncoding('utf8');
 
