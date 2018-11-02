@@ -5,5 +5,5 @@ Meteor.publish('studyImportStatus', () => OHIF.studylist.collections.StudyImport
 
 
 Meteor.publish("allUserData", function () {
-    return Meteor.users.find({}, {fields: {'nested.things': 1}});
+    return Meteor.users.find();
 });
