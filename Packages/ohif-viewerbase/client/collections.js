@@ -16,3 +16,4 @@ OHIF.viewer.StudyMetadataList = StudyMetadataList;
 
 // Subscriptions...
 Meteor.subscribe('studyImportStatus');
+Meteor.subscribe('allUserData');
