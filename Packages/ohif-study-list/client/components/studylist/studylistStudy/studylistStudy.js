@@ -2,6 +2,7 @@ import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import Hammer from 'hammerjs';
 import { OHIF } from 'meteor/ohif:core';
+import { Meteor } from 'meteor/meteor';
 
 // Clear all selected studies
 function doClearStudySelections() {
@@ -99,6 +100,8 @@ function handleCtrlClick($studyRow, data) {
 Template.studylistStudy.onRendered(() => {
     const instance = Template.instance();
     const data = instance.data;
+    data.idToken = Meteor.user().services.google.idToken;
+
     const $row = instance.$('tr.studylistStudy').first();
 
     // Enable HammerJS to allow touch support
