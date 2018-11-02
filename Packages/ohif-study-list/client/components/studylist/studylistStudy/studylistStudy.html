@@ -1,7 +1,7 @@
 <template name="studylistStudy">
     <tr class="studylistStudy noselect {{#if this.selected}}active{{/if}}">
         <td class="patientName">
-            {{formatPN patientName}}
+            {{formatPN patientName}}{{studyInstanceUid}}
         </td>
         <td class="patientId">
             {{patientId}}
