@@ -1,7 +1,7 @@
 <template name="studylistStudy">
     <tr class="studylistStudy noselect {{#if this.selected}}active{{/if}}">
         <td class="patientName">
-            {{formatPN patientName}} <a href="osirix://?methodName=downloadURL&URL='https://test2.kheops.online/link/eI5WaFFTU39PRGVowy15FV/{{studyInstanceUid}}?accept=application%2Fzip'">OsiriX Link</a>
+            {{formatPN patientName}} <a href="osirix://?methodName=downloadURL&URL='https://test2.kheops.online/link/eI5WaFFTU39PRGVowy15FV/studies/{{studyInstanceUid}}?accept=application%2Fzip'">OsiriX Link</a>
         </td>
         <td class="patientId">
             {{patientId}}
