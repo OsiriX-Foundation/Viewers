@@ -14,7 +14,7 @@ if (Meteor.isClient) {
 
     Router.onBeforeAction('loading');
 
-    Router.route('/:id?', {
+    Router.route('/viewers/:id?', {
         onRun: function() {
             console.warn('onRun');
             // Retrieve the query from the URL the user has entered
