@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Router } from 'meteor/clinical:router';
 import { OHIF } from 'meteor/ohif:core';
+import { cornerstoneWADOImageLoader } from 'meteor/ohif:cornerstone';
 
 if (Meteor.isClient) {
     // Disconnect from the Meteor Server since we don't need it
@@ -93,6 +94,17 @@ if (Meteor.isClient) {
             OHIF.log.info(`Sending Request to: ${url}`);
             oReq.open('GET', url);
             oReq.setRequestHeader('Accept', 'application/json')
+
+            if (this.params.hash) {
+                let token='Bearer '+this.params.hash.split("=")[1];
+                oReq.setRequestHeader('Authorization', token);
+
+                cornerstoneWADOImageLoader.configure({
+                    beforeSend: function(xhr){
+                        xhr.setRequestHeader('Authorization', token);
+                    }
+                });
+            }
 
             // Fire the request to the server
             oReq.send();
