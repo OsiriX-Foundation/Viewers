@@ -9,7 +9,7 @@ PORT = 3000
 # when building the application, which will set this as your
 # ROOT_URL.
 #URL_PATH="/subdirectory"
-URL_PATH="/viewers"
+URL_PATH=""
 
 class MyHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
    def do_GET(self):
