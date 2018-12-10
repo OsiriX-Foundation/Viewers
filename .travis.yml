@@ -42,3 +42,4 @@ deploy:
   script: docker/deploy.sh 
   on:
     all_branches: true
+
