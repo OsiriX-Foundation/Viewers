@@ -31,8 +31,8 @@ jobs:
         - meteor-build-client-fixed --version
         - curl https://install.meteor.com | /bin/sh
         - meteor npm install
-      #script:
-      #  - meteor-build-client-fixed ~/standaloneViewerBuild -u default
+      script:
+        - meteor-build-client-fixed ~/standaloneViewerBuild -u default
       after_success:
         - ls ~/standaloneViewerBuild
         - ls /home/travis
