@@ -14,7 +14,7 @@ if (Meteor.isClient) {
 
     Router.onBeforeAction('loading');
 
-    Router.route('/viewers/:id?', {
+    Router.route('/:id?', {
         onRun: function() {
             console.warn('onRun');
             // Retrieve the query from the URL the user has entered
@@ -95,8 +95,11 @@ if (Meteor.isClient) {
             oReq.open('GET', url);
             oReq.setRequestHeader('Accept', 'application/json')
 
-            if (this.params.hash) {
-                let token='Bearer '+this.params.hash.split("=")[1];
+            // Add token in the request header
+            // if fragment token is present
+            const tokenParams = this.params.hash.match(/(?:token)\=(.*?)(?:&|$)/);
+            if (tokenParams) {
+                let token="Bearer "+tokenParams[1];
                 oReq.setRequestHeader('Authorization', token);
 
                 cornerstoneWADOImageLoader.configure({
