@@ -33,7 +33,6 @@ jobs:
         - meteor npm install
       script:
         - meteor-build-client-fixed ~/standaloneViewerBuild -u default
-        - ls /docker
       after_success:
         - ls ~/standaloneViewerBuild
         - ls /home/travis
