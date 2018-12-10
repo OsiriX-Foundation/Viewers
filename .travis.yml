@@ -32,15 +32,20 @@ jobs:
         - curl https://install.meteor.com | /bin/sh
         - meteor npm install
       script:
+        - ls
+        - pwd
         - meteor-build-client-fixed ~/standaloneViewerBuild -u default
+        - docker build ../docker/ -t="osirixfoundation/viewer"
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker push osirixfoundation/viewer
       after_success:
         - ls ~/standaloneViewerBuild
         - ls /home/travis
         - ls /home/travis/build
         - ls /home/travis/build/OsiriX-Foundation/StandaloneViewer
-      deploy:
-        skip_cleanup: true
-        provider: script
-        script: docker/deploy.sh 
-        on:
-          all_branches: true
+      #deploy:
+      #  skip_cleanup: true
+      #  provider: script
+      #  script: docker/deploy.sh 
+      #  on:
+      #    all_branches: true
