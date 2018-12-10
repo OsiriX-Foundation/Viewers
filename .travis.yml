@@ -37,7 +37,7 @@ jobs:
         - ls ~/standaloneViewerBuild
         - ls /home/travis
         - ls /home/travis/build
-        - ls /home/travis/build/Viewers/StandaloneViewer
+        - ls /home/travis/build/OsiriX-Foundation/StandaloneViewer
       #deploy:
       #  provider: s3
       #  access_key_id: $AWS_ACCESS_KEY_ID
