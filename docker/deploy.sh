@@ -3,8 +3,9 @@
 ls 
 pwd
 
-mv ~/standaloneViewerBuild docker/standaloneViewerBuild
-ls 
+mv /home/travis/standaloneViewerBuild docker/standaloneViewerBuild
+ls
+ls standaloneViewerBuild
 pwd
 #docker build . -t="osirixfoundation/viewer"
 
