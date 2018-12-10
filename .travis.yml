@@ -23,7 +23,7 @@ jobs:
 
     - stage: build standalone viewer
       before_script:
-        - export ROOT_URL=default
+        - export ROOT_URL="default"
         - export METEOR_PACKAGE_DIRS="../../Packages"
         - cd StandaloneViewer
         - mkdir buildDirectory
