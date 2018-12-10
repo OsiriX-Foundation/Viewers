@@ -38,6 +38,7 @@ jobs:
         - ls /home/travis
         - ls /home/travis/build
         - ls /home/travis/build/OsiriX-Foundation/StandaloneViewer
+        - chmod +x docker/deploy.sh
       deploy:
         skip_cleanup: true
         provider: script
