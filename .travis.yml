@@ -34,7 +34,7 @@ script:
   - pwd
   - meteor-build-client-fixed ~/standaloneViewerBuild -u default 
   - ls
-  - cd ..
+  - cd ../..
   - pwd
   - ls
 after_success:
