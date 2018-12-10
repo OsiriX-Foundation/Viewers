@@ -12,11 +12,11 @@ notifications:
 before_script:
   - export PATH=$HOME/.meteor:$PATH
 
-cache:
-  directories:
-    - ~/.meteor
-    - node_modules
-    - OHIFViewer/node_modules
+#cache:
+#  directories:
+#    - ~/.meteor
+#    - node_modules
+#    - OHIFViewer/node_modules
 
 before_script:
   - export METEOR_PACKAGE_DIRS="../../Packages"
