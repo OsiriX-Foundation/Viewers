@@ -13,7 +13,6 @@ before_script:
   - export PATH=$HOME/.meteor:$PATH
 
 before_script:
-  - echo $TRAVIS_BUILD_DIR
   - export METEOR_PACKAGE_DIRS="../../Packages"
   - cd StandaloneViewer
   - mkdir buildDirectory
@@ -23,10 +22,11 @@ before_script:
   - curl https://install.meteor.com | /bin/sh
   - meteor npm install
 script:
-  - meteor-build-client-fixed $HOME/standaloneViewerBuild -u default 
+  - meteor-build-client-fixed $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild -u default 
+  - ls $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
 after_success:
   - ls $HOME/standaloneViewerBuild
-  - cd ../..
+  - cd $TRAVIS_BUILD_DIR
   - chmod +x docker/deploy.sh
 deploy:
   skip_cleanup: true
