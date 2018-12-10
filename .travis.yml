@@ -38,23 +38,9 @@ jobs:
         - ls /home/travis
         - ls /home/travis/build
         - ls /home/travis/build/OsiriX-Foundation/StandaloneViewer
-        - ls
-        - pwd
-        - cd ~
-        - ls 
-        - pwd
-        - docker build ./docker/ -t="osirixfoundation/viewer"
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker push osirixfoundation/viewer
-      #deploy:
-
-      #  provider: s3
-      #  access_key_id: $AWS_ACCESS_KEY_ID
-      #  secret_access_key: $AWS_SECRET_ACCESS_KEY
-      #  bucket: ohif-viewer
-      #  region: eu-central-1
-      #  skip_cleanup: true
-      #  local_dir: /home/travis/standaloneViewerBuild
-      #  acl: public_read
-      #  on:
-      #    branch: master
+      deploy:
+        skip_cleanup: true
+        provider: script
+        script: docker/deploy.sh 
+        on:
+          all_branches: true
