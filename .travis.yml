@@ -23,7 +23,7 @@ jobs:
 
     - stage: build standalone viewer
       before_script:
-        - export ROOT_URL="default"
+        - export ROOT_URL=gdfgsd
         - export METEOR_PACKAGE_DIRS="../../Packages"
         - cd StandaloneViewer
         - mkdir buildDirectory
@@ -33,7 +33,7 @@ jobs:
         - curl https://install.meteor.com | /bin/sh
         - meteor npm install
       script:
-        - meteor-build-client-fixed ~/standaloneViewerBuild -u $ROOT_URL
+        - meteor-build-client-fixed ~/standaloneViewerBuild -u default
       after_success:
         - ls ~/standaloneViewerBuild
         - ls /home/travis
