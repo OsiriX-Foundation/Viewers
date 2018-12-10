@@ -38,7 +38,7 @@ jobs:
         - ls /home/travis
         - ls /home/travis/build
         - ls /home/travis/build/OsiriX-Foundation/StandaloneViewer
-        - docker build -t="osirixfoundation/viewer"
+        - docker build ./docker/ -t="osirixfoundation/viewer"
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker push osirixfoundation/viewer
       #deploy:
