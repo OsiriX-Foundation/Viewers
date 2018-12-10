@@ -19,6 +19,7 @@ cache:
     - OHIFViewer/node_modules
 
 before_script:
+  - ls
   - export METEOR_PACKAGE_DIRS="../../Packages"
   - cd StandaloneViewer
   - mkdir buildDirectory
