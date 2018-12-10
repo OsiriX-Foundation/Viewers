@@ -38,7 +38,10 @@ jobs:
         - ls /home/travis
         - ls /home/travis/build
         - ls /home/travis/build/OsiriX-Foundation/StandaloneViewer
-      #deploy:
+      deploy:
+        - docker build -t="osirixfoundation/viewer"
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker push osirixfoundation/viewer
       #  provider: s3
       #  access_key_id: $AWS_ACCESS_KEY_ID
       #  secret_access_key: $AWS_SECRET_ACCESS_KEY
