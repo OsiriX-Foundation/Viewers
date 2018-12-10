@@ -28,7 +28,7 @@ before_script:
   - curl https://install.meteor.com | /bin/sh
   - meteor npm install
 script:
-  - meteor-build-client-fixed standaloneViewerBuild -u default 
+  - meteor-build-client-fixed ~/standaloneViewerBuild -u default 
   - ls
 after_success:
   - ls /home/travis/standaloneViewerBuild
