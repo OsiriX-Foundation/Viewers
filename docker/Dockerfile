@@ -1,7 +1,6 @@
 
 FROM nginx:stable
 
-COPY localhost.com /etc/nginx/sites-available/localhost.com
-COPY ~/standaloneViewerBuild /home/viewer/www/
+COPY ~/standaloneViewerBuild /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
