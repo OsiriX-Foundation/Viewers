@@ -34,6 +34,7 @@ jobs:
       script:
         - meteor-build-client-fixed ~/standaloneViewerBuild -u default
       after_success:
+        - ls /home/travis/standaloneViewerBuild
         - ls ~/standaloneViewerBuild
         - ls /home/travis
         - ls /home/travis/build
