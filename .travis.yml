@@ -25,9 +25,8 @@ script:
   - meteor-build-client-fixed $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild -u default 
   - ls $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
 after_success:
-  - ls $HOME/standaloneViewerBuild
-  - cd $TRAVIS_BUILD_DIR
-  - chmod +x docker/deploy.sh
+  - cd $TRAVIS_BUILD_DIR/docker
+  - chmod +x deploy.sh
 deploy:
   skip_cleanup: true
   provider: script
