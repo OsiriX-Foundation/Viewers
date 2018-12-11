@@ -19,8 +19,8 @@ before_script:
   - cd StandaloneViewer
   - npm install -g meteor-build-client-fixed@0.4.3
   - meteor-build-client-fixed --version
-  - curl https://install.meteor.com | /bin/sh
-  - meteor npm install
+  #- curl https://install.meteor.com | /bin/sh
+  #- meteor npm install
 script:
   #- meteor-build-client-fixed $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild -u default
   - mv $TRAVIS_BUILD_DIR/KheopsDocker/appCompiled $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
