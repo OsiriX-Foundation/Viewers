@@ -27,18 +27,18 @@ script:
   #- cp -r $BUILD_DIR $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
   #- cp -r $BUILD_DIR $TRAVIS_BUILD_DIR/docker/ssl/standaloneViewerBuild
   - cp -r $TRAVIS_BUILD_DIR/KheopsDocker/appCompiled $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
-  - cp -r $TRAVIS_BUILD_DIR/KheopsDocker/appCompiled $TRAVIS_BUILD_DIR/docker/ssl/standaloneViewerBuild
+  - cp -r $TRAVIS_BUILD_DIR/KheopsDocker/appCompiled $TRAVIS_BUILD_DIR/docker/tls/standaloneViewerBuild
   - ls $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
 after_success:
   - cd $TRAVIS_BUILD_DIR
-  - chmod +x docker/deploy.sh
-  - chmod +x docker/ssl/deployssl.sh
+  - chmod +x docker/deploy_none_tls.sh
+  - chmod +x docker/tls/deploy_tls.sh
 deploy:
   skip_cleanup: true
   provider: script
   script: 
-    ./docker/deploy.sh;
-    ./docker/ssl/deployssl.sh 
+    ./docker/deploy_none_tls.sh;
+    ./docker/ssl/deploy_tls.sh 
   on:
     all_branches: true
 
