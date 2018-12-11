@@ -22,15 +22,20 @@ before_script:
   - curl https://install.meteor.com | /bin/sh
   - meteor npm install
 script:
-  - meteor-build-client-fixed $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild -u default
-  #- mv $TRAVIS_BUILD_DIR/KheopsDocker/appCompiled $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
+  #- meteor-build-client-fixed $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild -u default
+  - mv $TRAVIS_BUILD_DIR/KheopsDocker/appCompiled $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
   - ls $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
 after_success:
   - cd $TRAVIS_BUILD_DIR
   - chmod +x docker/deploy.sh
+  - chmod +x docker/ssl/deployssl.sh
 deploy:
   skip_cleanup: true
-  provider: script
-  script: docker/deploy.sh 
-  on:
-    all_branches: true
+  - provider: script
+    script: docker/deploy.sh 
+    on:
+      all_branches: true
+ - provider: script
+    script: docker/ssl/deployssl.sh 
+    on:
+      all_branches: true
