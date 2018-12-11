@@ -38,7 +38,7 @@ deploy:
   provider: script
   script: 
     ./docker/deploy_none_tls.sh;
-    ./docker/ssl/deploy_tls.sh 
+    ./docker/tls/deploy_tls.sh 
   on:
     all_branches: true
 
