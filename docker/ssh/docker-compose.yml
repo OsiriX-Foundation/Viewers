@@ -1,0 +1,19 @@
+version: '3.1'
+services:
+
+  viewwer:
+    image: osirixfoundation/viewers:ssl
+    container_name: viewer
+    environment:
+      - SERVER_NAME=ohif.kheops.online
+    secrets:
+      - privkey1.pem
+      - fullchain1.pem
+    ports:
+      - "443:443"
+
+secrets:
+  privkey1.pem:
+    file: secrets/privkey1.pem
+  fullchain1.pem:
+    file: secrets/fullchain1.pem
