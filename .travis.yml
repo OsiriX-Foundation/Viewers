@@ -33,9 +33,6 @@ deploy:
   skip_cleanup: true
   provider: script
   script: docker/deploy.sh 
-  on:
-    all_branches: true
- provider: script
   script: docker/ssl/deployssl.sh 
   on:
     all_branches: true
