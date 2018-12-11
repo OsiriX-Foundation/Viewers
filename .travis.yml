@@ -26,6 +26,8 @@ script:
   - ls $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
 after_success:
   - cd $TRAVIS_BUILD_DIR/docker
+  - ls
+  - pwd
   - chmod +x deploy.sh
 deploy:
   skip_cleanup: true
