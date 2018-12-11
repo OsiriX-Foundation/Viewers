@@ -30,6 +30,6 @@ after_success:
 deploy:
   skip_cleanup: true
   provider: script
-  script: docker/deploy.sh 
+  script: deploy.sh 
   on:
     all_branches: true
