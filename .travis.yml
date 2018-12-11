@@ -22,6 +22,8 @@ before_script:
   #- curl https://install.meteor.com | /bin/sh
   #- meteor npm install
 script:
+  - export BUILD_DIR=$TRAVIS_BUILD_DIR/build
+  - echo $BUILD_DIR
   #- meteor-build-client-fixed $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild -u default
   - cp -r $TRAVIS_BUILD_DIR/KheopsDocker/appCompiled $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
   - cp -r $TRAVIS_BUILD_DIR/KheopsDocker/appCompiled $TRAVIS_BUILD_DIR/docker/ssl/standaloneViewerBuild
