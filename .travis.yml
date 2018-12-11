@@ -26,13 +26,7 @@ script:
   - ls $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
 after_success:
   - cd $TRAVIS_BUILD_DIR
-  - ls -l
-  - pwd
   - chmod +x docker/deploy.sh
-  - ls -l
-  #- docker build . -t="osirixfoundation/viewer"
-  #- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  #- docker push osirixfoundation/viewer
 deploy:
   skip_cleanup: true
   provider: script
