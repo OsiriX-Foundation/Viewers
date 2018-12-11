@@ -39,4 +39,3 @@ deploy:
     script: docker/ssl/deployssl.sh 
     on:
       all_branches: true
-      
