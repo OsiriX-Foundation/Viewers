@@ -8,4 +8,4 @@ docker push osirixfoundation/viewer
 
 chmod +x docker/ssh/deployssl.sh
 mv $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild $TRAVIS_BUILD_DIR/docker/ssh/standaloneViewerBuild
-./docker/ssh/deployssl.sh
+./docker/ssl/deployssl.sh

@@ -2,5 +2,5 @@
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-docker build ./docker/ssh/ -t osirixfoundation/viewer:ssl
+docker build ./docker/ssl/ -t osirixfoundation/viewer:ssl
 docker push osirixfoundation/viewer:ssl
