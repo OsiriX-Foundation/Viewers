@@ -2,7 +2,7 @@ version: '3.1'
 services:
 
   viewwer:
-    image: osirixfoundation/viewers:ssl
+    image: osirixfoundation/viewer:ssl
     container_name: viewer
     environment:
       - SERVER_NAME=ohif.kheops.online
