@@ -25,17 +25,17 @@ script:
   - meteor-build-client-fixed $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild -u default 
   - ls $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
 after_success:
-  - cd $TRAVIS_BUILD_DIR/docker
+  - cd $TRAVIS_BUILD_DIR
   - ls -l
   - pwd
-  - chmod +x deploy.sh
+  - chmod +x docker/deploy.sh
   - ls -l
-  - docker build . -t="osirixfoundation/viewer"
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push osirixfoundation/viewer
+  #- docker build . -t="osirixfoundation/viewer"
+  #- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  #- docker push osirixfoundation/viewer
 deploy:
   skip_cleanup: true
   provider: script
-  script: deploy.sh 
+  script: docker/deploy.sh 
   on:
     all_branches: true
