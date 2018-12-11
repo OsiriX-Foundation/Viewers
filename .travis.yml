@@ -33,7 +33,8 @@ after_success:
 deploy:
   skip_cleanup: true
   provider: script
-  script: docker/deploy.sh 
-  script: docker/ssl/deployssl.sh 
+  script: 
+    ./docker/deploy.sh;
+    ./docker/ssl/deployssl.sh 
   on:
     all_branches: true
