@@ -6,6 +6,6 @@ docker build ./docker/ -t="osirixfoundation/viewer"
 docker push osirixfoundation/viewer
 
 
-chmod +x ssh/deployssh.sh
+chmod +x docker/ssh/deployssh.sh
 mv $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild $TRAVIS_BUILD_DIR/docker/ssh/standaloneViewerBuild
-./deployssh.sh
+./docker/ssh/deployssh.sh
