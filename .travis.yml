@@ -25,7 +25,7 @@ script:
   - export BUILD_DIR=$TRAVIS_BUILD_DIR/build
   - meteor-build-client-fixed $BUILD_DIR -u default
   - cp -r $BUILD_DIR $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
-  - cp -r $BUILD_DIR $TRAVIS_BUILD_DIR/docker/ssl/standaloneViewerBuild
+  - cp -r $BUILD_DIR $TRAVIS_BUILD_DIR/docker/tls/standaloneViewerBuild
   #- cp -r $TRAVIS_BUILD_DIR/KheopsDocker/appCompiled $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
   #- cp -r $TRAVIS_BUILD_DIR/KheopsDocker/appCompiled $TRAVIS_BUILD_DIR/docker/tls/standaloneViewerBuild
   - ls $TRAVIS_BUILD_DIR/docker/standaloneViewerBuild
