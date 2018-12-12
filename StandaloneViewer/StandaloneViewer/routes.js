@@ -95,18 +95,12 @@ if (Meteor.isClient) {
             oReq.open('GET', url);
             oReq.setRequestHeader('Accept', 'application/json')
 
-            // Add token in the request header
-            // if fragment token is present
-            const tokenParams = this.params.hash.match(/(?:token)\=(.*?)(?:&|$)/);
-            if (tokenParams) {
-                let token="Bearer "+tokenParams[1];
-                oReq.setRequestHeader('Authorization', token);
-
-                cornerstoneWADOImageLoader.configure({
-                    beforeSend: function(xhr){
-                        xhr.setRequestHeader('Authorization', token);
-                    }
-                });
+            // Add token in the request authorization header
+            // if a token fragment parameters is present
+            const tokenParam = this.params.hash ? this.params.hash.match(/(?:token)=(.*?)(?:&|$)/) : null;
+            if (tokenParam) {
+                OHIF.viewer.authorizationToken = "Bearer " + tokenParam[1];
+                oReq.setRequestHeader('Authorization', OHIF.viewer.authorizationToken);
             }
 
             // Fire the request to the server
