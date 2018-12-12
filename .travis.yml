@@ -9,10 +9,8 @@ services:
 notifications:
   email: false
 
-#before_script:
-#  - export PATH=$HOME/.meteor:$PATH
-
 before_script:
+#  - export PATH=$HOME/.meteor:$PATH
   - export METEOR_PACKAGE_DIRS="../../Packages"
   - cd StandaloneViewer
   - mkdir buildDirectory
