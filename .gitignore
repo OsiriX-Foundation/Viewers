@@ -1,3 +1,6 @@
+# docker-compose
+/docker-compose/secrets
+
 # Packages
 node_modules
 
