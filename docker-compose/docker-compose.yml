@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+  ohif:
+    container_name: ohif
+    image: ohif-viewer:test
+    restart: on-failure
+    ports:
+      - "80:80"
+      - "443:443"
+    secrets:
+      - privkey1.pem
+      - fullchain1.pem
+secrets:
+  privkey1.pem:
+    file: secrets/privkey1.pem
+  fullchain1.pem:
+    file: secrets/fullchain1.pem
