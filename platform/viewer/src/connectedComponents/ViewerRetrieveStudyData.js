@@ -105,7 +105,7 @@ const _showUserMessage = (queryParamApplied, message, dialog = {}) => {
     return;
   }
 
-  const { show: showUserMessage = () => { } } = dialog;
+  const { show: showUserMessage = () => {} } = dialog;
   showUserMessage({
     message,
   });
@@ -175,7 +175,10 @@ function ViewerRetrieveStudyData({
   studyInstanceUids,
   seriesInstanceUids,
   clearViewportSpecificData,
+  setServers,
 }) {
+  server.active = true;
+  setServers([server]);
   // hooks
   const [error, setError] = useState(false);
   const [studies, setStudies] = useState([]);
@@ -318,7 +321,10 @@ function ViewerRetrieveStudyData({
   const prevStudyInstanceUids = usePrevious(studyInstanceUids);
 
   useEffect(() => {
-    const hasStudyInstanceUidsChanged = !(prevStudyInstanceUids && prevStudyInstanceUids.every(e => studyInstanceUids.includes(e)));
+    const hasStudyInstanceUidsChanged = !(
+      prevStudyInstanceUids &&
+      prevStudyInstanceUids.every(e => studyInstanceUids.includes(e))
+    );
 
     if (hasStudyInstanceUidsChanged) {
       studyMetadataManager.purge();
@@ -353,6 +359,7 @@ ViewerRetrieveStudyData.propTypes = {
   studyInstanceUids: PropTypes.array.isRequired,
   seriesInstanceUids: PropTypes.array,
   server: PropTypes.object,
+  setServers: PropTypes.func,
   clearViewportSpecificData: PropTypes.func.isRequired,
 };
 

@@ -1,0 +1,17 @@
+{
+  "transactionId": "testDICOMs",
+  "servers": {
+    "dicomWeb": [
+      {
+        "name": "DCM4CHEE",
+        "wadoUriRoot": "https://demo.kheops.online/api/link/11cv3sn3WSJJLPMXifhqso/wado",
+        "qidoRoot": "https://demo.kheops.online/api/link/11cv3sn3WSJJLPMXifhqso",
+        "wadoRoot": "https://demo.kheops.online/api/link/11cv3sn3WSJJLPMXifhqso",
+        "qidoSupportsIncludeField": true,
+        "imageRendering": "wadouri",
+        "thumbnailRendering": "wadouri",
+        "enableStudyLazyLoad": true
+      }
+    ]
+  }
+}
