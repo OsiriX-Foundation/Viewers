@@ -9,7 +9,6 @@ import { ViewerbaseDragDropContext } from '@ohif/ui';
 import { SignoutCallbackComponent } from 'redux-oidc';
 import asyncComponent from './components/AsyncComponent.js';
 import * as RoutesUtil from './routes/routesUtil';
-import { queryString }  from 'query-string';
 
 import NotFound from './routes/NotFound.js';
 import { Bar, Container } from './components/LoadingBar/';
@@ -54,8 +53,7 @@ class OHIFStandaloneViewer extends Component {
     const userNotLoggedIn = userManager && (!user || user.expired);
     if (userNotLoggedIn) {
       const pathname = this.props.location.pathname;
-
-      if (pathname !== '/callback') {
+      if (pathname !== '/callback' && pathname !== '/login') {
         sessionStorage.setItem('ohif-redirect-to', pathname);
       }
 
@@ -87,16 +85,25 @@ class OHIFStandaloneViewer extends Component {
           <Route
             path="/login"
             component={() => {
-              const { iss = null, login_hint = null, target_link_uri = null } = queryString.parse(this.props.location.search);
+              const queryParams = new URLSearchParams(
+                this.props.location.search
+              );
+              const login_hint = queryParams.get('login_hint');
+              const target_link_uri = new URL(
+                queryParams.get('target_link_uri')
+              );
               userManager.getUser().then(user => {
                 if (target_link_uri != null) {
-                  sessionStorage.setItem('ohif-redirect-to', target_link_uri);
+                  sessionStorage.setItem(
+                    'ohif-redirect-to',
+                    target_link_uri.pathname
+                  );
                 }
 
                 if (login_hint != null) {
-                  userManager.signinSilent({login_hint});
+                  userManager.signinRedirect({ login_hint });
                 } else {
-                    userManager.signinSilent();
+                  userManager.signinRedirect();
                 }
               });
 

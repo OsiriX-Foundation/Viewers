@@ -14,6 +14,7 @@ class CallbackPage extends Component {
       <CallbackComponent
         userManager={this.props.userManager}
         successCallback={() => {
+          debugger;
           const pathname = sessionStorage.getItem('ohif-redirect-to');
 
           this.props.history.push(pathname);
