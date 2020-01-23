@@ -1,6 +1,6 @@
 window.config = {
   // default: '/'
-  routerBasename: '/',
+  routerBasename: '/ohif/',
   whiteLabelling: {},
   extensions: [],
   showStudyList: true,
@@ -8,10 +8,10 @@ window.config = {
   servers: {
     dicomWeb: [
       {
-        name: 'DCM4CHEE',
-        wadoUriRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/wado',
-        qidoRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/rs',
-        wadoRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/rs',
+        name: 'KHEOPS',
+        wadoUriRoot: 'https://demo.kheops.online/api/wado',
+        qidoRoot: 'https://demo.kheops.online/api',
+        wadoRoot: 'https://demo.kheops.online/api',
         qidoSupportsIncludeField: true,
         imageRendering: 'wadors',
         thumbnailRendering: 'wadors',
@@ -19,6 +19,17 @@ window.config = {
       },
     ],
   },
+  oidc: [
+    {
+      // ~ REQUIRED
+      // Authorization Server URL
+      authority: 'http://129.194.217.90/.well-known/openid-configuration',
+      client_id: 'ohif-viewer',
+      redirect_uri: 'https://demo.kheops.online/ohif/callback', // `OHIFStandaloneViewer.js`
+      response_type: 'code', // "Authorization Code Flow"
+      scope: 'openid', // email profile openid
+    },
+  ],
   // Extensions should be able to suggest default values for these?
   // Or we can require that these be explicitly set
   hotkeys: [
