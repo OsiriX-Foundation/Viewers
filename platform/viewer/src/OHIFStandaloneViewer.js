@@ -9,6 +9,7 @@ import { ViewerbaseDragDropContext } from '@ohif/ui';
 import { SignoutCallbackComponent } from 'redux-oidc';
 import asyncComponent from './components/AsyncComponent.js';
 import * as RoutesUtil from './routes/routesUtil';
+import { queryString }  from 'query-string';
 
 import NotFound from './routes/NotFound.js';
 import { Bar, Container } from './components/LoadingBar/';
@@ -82,6 +83,25 @@ class OHIFStandaloneViewer extends Component {
           <Route
             path="/callback"
             render={() => <CallbackPage userManager={userManager} />}
+          />
+          <Route
+            path="/login"
+            component={() => {
+              const { iss = null, login_hint = null, target_link_uri = null } = queryString.parse(this.props.location.search);
+              userManager.getUser().then(user => {
+                if (target_link_uri != null) {
+                  sessionStorage.setItem('ohif-redirect-to', target_link_uri);
+                }
+
+                if (login_hint != null) {
+                  userManager.signinSilent({login_hint});
+                } else {
+                    userManager.signinSilent();
+                }
+              });
+
+              return null;
+            }}
           />
           <Route
             component={() => {
