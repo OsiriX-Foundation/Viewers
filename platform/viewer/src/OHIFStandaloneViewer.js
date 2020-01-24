@@ -54,7 +54,7 @@ class OHIFStandaloneViewer extends Component {
     if (userNotLoggedIn) {
       const pathname = this.props.location.pathname;
 
-      if (pathname !== '/callback' && pathname !== '/login') {
+      if (pathname !== '/callback') {
         sessionStorage.setItem('ohif-redirect-to', pathname);
       }
 
@@ -86,26 +86,32 @@ class OHIFStandaloneViewer extends Component {
           <Route
             path="/login"
             component={() => {
-              const queryParams = new URLSearchParams(
-                this.props.location.search
-              );
-              const login_hint = queryParams.get('login_hint');
-              const target_link_uri = queryParams.get('target_link_uri');
+              const queryParams = new URLSearchParams(this.props.location.search);
+              const iss = queryParams.get('iss');
+              const loginHint = queryParams.get('login_hint');
+              const targetLinkUri = queryParams.get('target_link_uri');
 
-              userManager.removeUser().then(user => {
-                if (target_link_uri != null) {
-                  sessionStorage.setItem(
-                    'ohif-redirect-to',
-                    new URL(target_link_uri).pathname
-                  );
+              const oidcAuthority = appConfig.oidc !== null && appConfig.oidc.authority;
+
+              if (iss !== oidcAuthority) {
+                  console.error("iss of /login does not match the oidc authority");
+                  return null;
+              }
+
+              userManager.removeUser().then(() => {
+                if (targetLinkUri !== null) {
+                  sessionStorage.setItem('ohif-redirect-to', new URL(targetLinkUri).pathname);
+                } else {
+                  sessionStorage.setItem('ohif-redirect-to', '/');
                 }
 
-                if (login_hint != null) {
-                  userManager.signinRedirect({ login_hint });
+                if (loginHint !== null) {
+                  userManager.signinRedirect({ loginHint });
                 } else {
                   userManager.signinRedirect();
                 }
               });
+
               return null;
             }}
           />
