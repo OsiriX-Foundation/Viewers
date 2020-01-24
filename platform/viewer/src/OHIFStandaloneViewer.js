@@ -53,6 +53,7 @@ class OHIFStandaloneViewer extends Component {
     const userNotLoggedIn = userManager && (!user || user.expired);
     if (userNotLoggedIn) {
       const pathname = this.props.location.pathname;
+
       if (pathname !== '/callback' && pathname !== '/login') {
         sessionStorage.setItem('ohif-redirect-to', pathname);
       }
@@ -89,14 +90,13 @@ class OHIFStandaloneViewer extends Component {
                 this.props.location.search
               );
               const login_hint = queryParams.get('login_hint');
-              const target_link_uri = new URL(
-                queryParams.get('target_link_uri')
-              );
-              userManager.getUser().then(user => {
+              const target_link_uri = queryParams.get('target_link_uri');
+
+              userManager.removeUser().then(user => {
                 if (target_link_uri != null) {
                   sessionStorage.setItem(
                     'ohif-redirect-to',
-                    target_link_uri.pathname
+                    new URL(target_link_uri).pathname
                   );
                 }
 
@@ -106,7 +106,6 @@ class OHIFStandaloneViewer extends Component {
                   userManager.signinRedirect();
                 }
               });
-
               return null;
             }}
           />
